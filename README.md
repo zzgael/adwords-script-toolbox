@@ -7,22 +7,23 @@ A simple set of tools designed to enhance the script simplicity and avoid perfor
 - BetterLog.js ( based on the idea of peterherrmann/BetterLog ), a Logger replacement
 
 #Utility Classes
+- Singleton Factory ( making any instance a singleton)
 - Collection : a complete AdWords entities collector, with Spreadsheet export, and loop optimization
 - Scrapy : a very simple but powerful link with Python Scrapy. It's meant to work with zzgael/django-scrapy-automated-crawler and can be adapted to scrap just every single content regexp found for a list of urls given.
 
 #Usage
 For your first build you'll need Node + Gulp.
-'''
+```
 npm install
 gulp build
-'''
+```
 A tools.js file will then be created. You can now include your tools in your AdWords script :
-'''javascript
+```javascript
 eval(UrlFetchApp.fetch("https://your-server.com/tools.js").getContentText());
       // This syntax is needed in order for AdWords to know which function is used in the script
       // Not providing this line will probably result an error
       (MailApp.sendEmail, SpreadsheetApp.create);
-'''
+```
 
 
 #Modifying
