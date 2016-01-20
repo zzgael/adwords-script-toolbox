@@ -30,4 +30,4 @@ If you need to modify any of the .js file, just run gulp watch.
 
 #No documentation yet. Work in progress.
 
-[logo]: http://www.adquality.fr/paris/assets/images/logo.png
+[logo]: http://www.adquality.fr/paris/assets/images/logo.png "AdQuality"

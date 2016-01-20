@@ -1,0 +1,16 @@
+{
+  "name": "adwords-script-toolbox",
+  "description": "AdWords Script Toolbox",
+  "version": "0.0.1",
+  "private": true,
+  "dependencies": {
+    "gulp": "*",
+    "underscore": "*"
+  },
+  "devDependencies": {
+    "gulp-concat": "^2.6.0",
+    "gulp-plumber": "^1.0.1",
+    "gulp-rename": "^1.2.2",
+    "gulp-uglify": "^1.5.1",
+  }
+}
