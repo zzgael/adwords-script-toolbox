@@ -8,7 +8,8 @@ A simple set of tools designed to enhance the script simplicity and avoid perfor
 
 #Utility Classes
 - Singleton Factory ( making any instance a singleton)
-- Collection : a complete AdWords entities collector, with Spreadsheet export, and loop optimization
+- Collection : a complete AdWords entities collector, with Spreadsheet export and loop optimization
+- DeferredCollection : a deferred subcollection, executed from the parent collection for performance
 - Scrapy : a very simple but powerful link with Python Scrapy. It's meant to work with zzgael/django-scrapy-automated-crawler and can be adapted to scrap just every single content regexp found for a list of urls given.
 
 #Usage
