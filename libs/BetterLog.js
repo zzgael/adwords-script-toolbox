@@ -118,7 +118,7 @@ this.Logger = (function () {
   }
 
   return {
-
+    Level : Level,
     /*************************************************************************
     * public methods
     *********/
@@ -148,15 +148,16 @@ this.Logger = (function () {
     ,log : function (msg,level) {
       counter++;
 
-      var log = convertUsingDefaultPatternLayout_(msg);
-
-      //default console logging (built in with Google Apps Script's View > Logs...)
-      OldLogger.log(log);
+      var formattedMsg = convertUsingDefaultPatternLayout_(msg);
 
       if(level && level < level_)
         return false;
 
-      logs.push(log);
+      // Don't format if it's an object. Old Logger handles them better
+      OldLogger.log(_.isString(msg) ? formattedMsg : msg);
+
+
+      logs.push(formattedMsg);
 
       //ss logging
       if (sheet_) {
@@ -221,7 +222,7 @@ this.Logger = (function () {
 
       options.footer && addHtmlBody( newLine+newLine + options.footer );
 
-      MailApp.sendEmail(recipient, subject, body, _.omit(options, ['logo','footer','html']));
+      MailApp.sendEmail(recipient, subject, body, _.omit(options, ['logo','footer']));
 
       Logger.log("Email sent to "+ recipient);
     }

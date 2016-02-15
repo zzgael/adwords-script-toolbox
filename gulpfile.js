@@ -14,6 +14,7 @@ gulp.task("build",function () {
     'libs/Singleton.js',
     'libs/BetterLog.js',
     'src/Collection.js',
+    'src/DeferredCollection.js',
     'src/Scrapy.js'
   ])
     .pipe(plumber())

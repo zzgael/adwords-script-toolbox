@@ -6,8 +6,8 @@ this.Singleton = (function () {
     if($instances[id]) {
       return $instances[id];
     }
-    $instances[id] = new classObj;
+    $instances[id] = callback(classObj);
 
-    return callback.apply($instances[id]);
+    return $instances[id];
   }
 })();
