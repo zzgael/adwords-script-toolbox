@@ -1,7 +1,7 @@
 // Extremely fast URL Fetch handler with Scrapy
 // Request are cached from the previous script execution
 this.Scrapy = (function () {
-  return Class.extend({
+  return LoggableClass.extend({
     init : function (url) {
       if(!url)
         return this;
@@ -14,7 +14,6 @@ this.Scrapy = (function () {
       Logger.log("Downloading last cached URLs data");
       var request = this.fetch("items.json");
       if(request) {
-        Logger.log("Finished downloading. Processing JSON");
         var items = JSON.parse(request.getContentText());
         _.each(items, function (item) {
           self.$results[item.url] = item.result;

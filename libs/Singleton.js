@@ -1,13 +1,12 @@
 this.Singleton = (function () {
-  var $instances = [];
+  var $instances = {};
 
-  return function (classObj,callback) {
-    var id = classObj+callback.toString();
-    if($instances[id]) {
+  return function (instance, callback) {
+    var id = instance.toString()+callback.toString();
+    if(typeof $instances[id] != "undefined") {
       return $instances[id];
     }
-    $instances[id] = callback(classObj);
-
-    return $instances[id];
+    $instances[id] = instance();
+    return callback($instances[id]);
   }
 })();

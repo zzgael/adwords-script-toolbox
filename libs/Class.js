@@ -19,6 +19,9 @@ var Class = (function(global) {
     // (but without running the init constructor)
     var proto = Object.create(_super);
 
+    if(_.isFunction(props))
+      props = props();
+
     // Copy the properties over onto the new prototype
     for (var name in props) {
       // Check if we're overwriting an existing function
