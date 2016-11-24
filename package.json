@@ -9,8 +9,9 @@
   },
   "devDependencies": {
     "gulp-concat": "^2.6.0",
+    "gulp-insert": "^0.5.0",
     "gulp-plumber": "^1.0.1",
     "gulp-rename": "^1.2.2",
-    "gulp-uglify": "^1.5.1",
+    "gulp-uglify": "^1.5.1"
   }
 }
