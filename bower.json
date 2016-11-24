@@ -1,0 +1,24 @@
+{
+  "name": "adwords-script-toolbox",
+  "description": "AdWords Script Toolbox",
+  "main": "",
+  "authors": [
+    "Gael IDMKR <zzgael@gmail.com>"
+  ],
+  "license": "MIT",
+  "homepage": "https://github.com/zzgael/adwords-script-toolbox",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "error-stack-parser": "^1.3.6",
+    "lz-string": "^1.4.4",
+    "pako": "^1.0.3",
+    "stackframe": "^1.0.2",
+    "stacktrace-js": "https://github.com/stacktracejs/stacktrace.js.git#^1.3.1"
+  }
+}

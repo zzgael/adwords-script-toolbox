@@ -10,7 +10,8 @@ A simple set of tools designed to enhance the script simplicity and avoid perfor
 
 ##Better debugging
 
-Adwords Script doesn't provide any stack when there's an error. StackedError.js can display a nice stack, even from a distant eval'd script.
+Adwords Script doesn't provide any stack when there's an error. 
+Thanks to [error-stack-parser](https://github.com/stacktracejs/error-stack-parser), StackedError.js can display a nice stack, even from a distant eval'd script.
 It also sends you an email.
 ```js
 var src = UrlFetchApp.fetch("https://your-server.com/tools.min.js?"+(new Date/1E3|0)).getContentText();
@@ -107,6 +108,7 @@ If you want to plug a Scrapy (Python) instance
 For your first build you'll need Node + Gulp.
 ```
 npm install
+bower install
 gulp build
 ```
 A tools.js file will then be created. You can now include your tools in your AdWords script :
