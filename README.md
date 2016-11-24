@@ -34,21 +34,6 @@ This example in coffeescript is an implementation of a scenario :
 - Stock is also provided
 - We want to pause every AdGroup whose product stock is inferior to 3
 ```coffee
-AdGroupsCollection().each( (adGroupItem) ->
-    product = AdGroupsCollection().getProduct(adGroupItem)
-
-    if !product
-        notice "No feed item found for ad id " + adGroupItem.productId
-        return
-
-    productHasEnoughStock = product.stock > 3
-        
-    if adGroupItem.isEnabled and !productHasEnoughStock
-        adGroupItem.pause()
-    else if !adGroupItem.isEnabled and productHasEnoughStock
-        adGroupItem.enable()
-)
-
 # Defining a Collector with an AdWords Selector automatically makes it an AdWords collection
 AdGroupsCollection = -> Collector(
     selector: AdWordsApp.adGroups()
@@ -67,7 +52,7 @@ AdGroupsCollection = -> Collector(
 
 # _FEEDS is in an array of XML feeds
 # The collector will return an Array collection
-@FeedsCollection = -> Collector(
+FeedsCollection = -> Collector(
     selector: _FEEDS
     init: (feedUrl) ->
         # getFeeditems is a helper methods capable of returning an array from a XML feed URL
@@ -76,16 +61,31 @@ AdGroupsCollection = -> Collector(
 
 # Using underscore we can quickly make a new collection from plucked values
 # This collection will contains every feeds items flattened in a one dimension array
-@FeedItemsCollection = -> Collector(
+FeedItemsCollection = -> Collector(
     selector: _.flatten(
         _.map FeedsCollection(), (feedItemsCollection) -> @get()
     )
-    # Chai.js is included for assertions. Useful for debugging, maybe also for production code than can't run without conditions.
+    # Chai.js is included for assertions. Useful for debugging, maybe also for production code 
+    # than can't run without conditions.
     assertions: [
         -> expect(@get()).to.be.an("array").with.length.above(0)
     ]
 )
 
+AdGroupsCollection().each( (adGroupItem) ->
+    product = AdGroupsCollection().getProduct(adGroupItem)
+
+    if !product
+        notice "No feed item found for ad id " + adGroupItem.productId
+        return
+
+    productHasEnoughStock = product.stock > 3
+        
+    if adGroupItem.isEnabled and !productHasEnoughStock
+        adGroupItem.pause()
+    else if !adGroupItem.isEnabled and productHasEnoughStock
+        adGroupItem.enable()
+)
 ```
 
 ##Large Collection
