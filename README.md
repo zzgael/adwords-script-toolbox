@@ -8,47 +8,74 @@ A simple set of tools designed to enhance the script simplicity and avoid perfor
 
 #Features
 
+
 ##Collector & Collections
 
 Define collectors capable of retrieving AdWords entities as Collections, then add props, methods and relationships.
-Chai.js is included for assertions.
+Not only this Model style of class is convenient to write, but it can also save you some headaches. It respects all of the Google  [optimization guidelines](https://developers.google.com/adwords/scripts/docs/best-practices?hl=fr).
 
-Example is in coffeescript.
+This example in coffeescript is an implementation of this scenario : 
+- There is a campaign containing AdGroups corresponding to E-commerce products
+- Every AdGroup identified in a specific campaign has a XML feed product corresponding
+- The AdGroup Name identifies as the ID of the product, given in each feed item
+- Stock is also provided
+- We want to pause every AdGroup whose product stock is inferior to 3
 ```coffee
+AdGroupsCollection().each( (adGroupItem) ->
+    product = AdGroupsCollection().getProduct(adGroupItem)
 
-AdsCollection = -> Collector(
-    selector: AdWordsApp.ads().withCondition(
-        'Status = Enabled'
-    )
-    key: 'ad'
-    props: adGroupId: "AdGroup.Id"
+    if !product
+        notice "No feed item found for ad id " + adGroupItem.productId
+        return
+
+    productHasEnoughStock = product.stock > 3
+        
+    if adGroupItem.isEnabled and !productHasEnoughStock
+        adGroupItem.pause()
+    else if !adGroupItem.isEnabled and productHasEnoughStock
+        adGroupItem.enable()
 )
 
+# Defining a Collector with an AdWords Selector automatically makes it an AdWords collection
 AdGroupsCollection = -> Collector(
     selector: withinCampaigns( AdWordsApp.adGroups())
     key: 'adGroup'
     props:
-        id : "Id"
-        name: "Name"
-        isEnabled: (item) ->
-            item.adGroup.isEnabled()
+        productId: "Name"
+        isEnabled: (item) -> item.adGroup.isEnabled()
     methods:
-        pause: (item) ->
-            item.adGroup.pause()
-        enable: (item) ->
-            item.adGroup.enable()
+        getProduct: (item) ->
+            item.FeedItemsCollection.get(0)
+            
     relations: [
-        ['AdsCollection','adGroupId']
-    ]
-    assertions: [
-        ->
-            adsItems = this.subCollection("AdCoreAdsCollection").get()
-            expect(adsItems).to.be.an("array").with.length.above(0)
+        ['FeedItemsCollection', 'id', 'productId']
     ]
 )
+
+# _FEEDS is in an array of XML feeds
+# The collector will return an Array collection
+@FeedsCollection = -> Collector(
+    selector: _FEEDS
+    init: (campaignsList, feedUrl) ->
+        # getFeeditems is a helper methods capable of returning an array from a XML feed URL
+        new Collection(getFeedItems feedUrl)
+)
+
+# Using underscore we can quickly make a new collection from plucked values
+# This collection will contains every feeds items flattened in a one dimension array
+@FeedItemsCollection = -> Collector(
+    selector: _.flatten(
+        _.map FeedsCollection(), (feedItemsCollection) -> @get()
+    )
+    # Chai.js is included for assertions. Useful for debugging, maybe also for production code than can't run without conditions.
+    assertions: [
+        -> expect(@get()).to.be.an("array").with.length.above(0)
+    ]
+)
+
 ```
 
-Here is a complete example of what a native AdWords Script code vs Collector code looks like.
+Here is a complete example of what native AdWords Script code vs Collector code looks like.
 
 
 #Usage
