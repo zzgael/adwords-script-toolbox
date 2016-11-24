@@ -1,3 +1,7 @@
 node_modules/
 tools.js
 scripts
+bower_components
+htdocs
+logs
+gulpfile_private.js

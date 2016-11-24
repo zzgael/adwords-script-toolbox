@@ -5,8 +5,8 @@ var gulp = require('gulp'),
     plumber = require('gulp-plumber');
 insert = require('gulp-insert');
 
-gulp.task('watch', ["ybadcount", "adcore_connector"], function () {
-    gulp.watch(['src/**/*.*', 'libs/**/*.js', 'scripts/**/*.*'], ["ybadcount", "adcore_connector"]);
+gulp.task('watch', function () {
+    gulp.watch(['src/**/*.*', 'libs/**/*.js'], ["build"]);
 });
 
 gulp.task("build", function () {
@@ -37,41 +37,6 @@ gulp.task("build", function () {
         ])
         .pipe(plumber())
         // .pipe(uglify())
-        .pipe(concat('tools.js'))
-        .pipe(gulp.dest('./htdocs/'));
+        .pipe(concat('tools.min.js'))
+        .pipe(gulp.dest('./'));
 });
-
-gulp.task("build_scripts_coffee", ["build"], function () {
-    return gulp.src([
-            'scripts/adcore_connector/*.coffee'
-        ])
-        .pipe(plumber())
-        .pipe(coffee({bare:true}))
-        .pipe(concat('adcore_connector.js'))
-        .pipe(gulp.dest('./htdocs/'));
-});
-
-
-/////////////////////////
-
-gulp.task("ybadcount", ["build"], function () {
-    return gulp.src([
-            'htdocs/tools.js',
-            'scripts/ybadcount.js'
-        ])
-        .pipe(plumber())
-        .pipe(concat('ybadcount.js'))
-        .pipe(gulp.dest('./htdocs/'));
-});
-
-
-gulp.task("adcore_connector", ["build_scripts_coffee"], function () {
-    return gulp.src([
-            'htdocs/tools.js',
-            'htdocs/adcore_connector.js'
-        ])
-        .pipe(plumber())
-        .pipe(concat('adcore_connector.js'))
-        .pipe(gulp.dest('./htdocs/'));
-});
-
