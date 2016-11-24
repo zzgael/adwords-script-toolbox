@@ -8,13 +8,25 @@ A simple set of tools designed to enhance the script simplicity and avoid perfor
 
 #Features
 
+##Better debugging
+
+Adwords Script doesn't provide any stack when there's an error. StackedError.js can display a nice stack, even from a distant eval'd script.
+It also sends you an email.
+```js
+var src = UrlFetchApp.fetch("https://your-server.com/tools.min.js?"+(new Date/1E3|0)).getContentText();
+try {
+    eval(src);
+  } catch (e) {
+    throw new StackedError(e, src, 'your@email.com');
+  }
+```
 
 ##Collector & Collections
 
 Define collectors capable of retrieving AdWords entities as Collections, then add props, methods and relationships.
 Not only this Model style of class is convenient to write, but it can also save you some headaches. It respects all of the Google  [optimization guidelines](https://developers.google.com/adwords/scripts/docs/best-practices?hl=fr).
 
-This example in coffeescript is an implementation of this scenario : 
+This example in coffeescript is an implementation of a scenario : 
 - There is a campaign containing AdGroups corresponding to E-commerce products
 - Every AdGroup identified in a specific campaign has a XML feed product corresponding
 - The AdGroup Name identifies as the ID of the product, given in each feed item
@@ -38,7 +50,7 @@ AdGroupsCollection().each( (adGroupItem) ->
 
 # Defining a Collector with an AdWords Selector automatically makes it an AdWords collection
 AdGroupsCollection = -> Collector(
-    selector: withinCampaigns( AdWordsApp.adGroups())
+    selector: AdWordsApp.adGroups()
     key: 'adGroup'
     props:
         productId: "Name"
@@ -56,7 +68,7 @@ AdGroupsCollection = -> Collector(
 # The collector will return an Array collection
 @FeedsCollection = -> Collector(
     selector: _FEEDS
-    init: (campaignsList, feedUrl) ->
+    init: (feedUrl) ->
         # getFeeditems is a helper methods capable of returning an array from a XML feed URL
         new Collection(getFeedItems feedUrl)
 )
@@ -75,8 +87,21 @@ AdGroupsCollection = -> Collector(
 
 ```
 
-Here is a complete example of what native AdWords Script code vs Collector code looks like.
+##Large Collection
 
+A normal collection but capable of retrieving more than 50k entities.
+
+##GoogleSheet
+
+Fill sheets with ease.
+
+##Mailer
+
+A bit of helping and a bit of templating ( header/footer )
+
+##Scrapy
+
+If you want to plug a Scrapy (Python) instance
 
 #Usage
 For your first build you'll need Node + Gulp.
@@ -95,7 +120,7 @@ function main() {
     eval(src);
   } catch (e) {
     if(typeof StackedError !== "undefined")
-      throw new StackedError(e, src, 'zzgael@gmail.com');
+      throw new StackedError(e, src, 'your@email.com');
     else
       throw new Error(e);
   }

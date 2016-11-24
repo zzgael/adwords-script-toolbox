@@ -5,3 +5,4 @@ bower_components
 htdocs
 logs
 gulpfile_private.js
+src/Models
